@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sifon Imahjnr — Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inconsolata:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --surface: #f0ece4;
+    --ink: #1a1814;
+    --ink-mid: #4a4640;
+    --ink-light: #8a8480;
+    --ink-faint: #c8c4bc;
+    --accent: #2a1f0e;
+    --rule: #d8d4cc;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'Inconsolata', 'Courier New', monospace;
+    --max: 720px;
+    --nav-w: 200px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e0d0b;
+      --surface: #161510;
+      --ink: #e8e4dc;
+      --ink-mid: #a8a49c;
+      --ink-light: #68645c;
+      --ink-faint: #2c2b28;
+      --accent: #d4c8a8;
+      --rule: #2a2926;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 18px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 300;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* ── Layout ── */
+  .shell {
+    display: grid;
+    grid-template-columns: var(--nav-w) 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── Sidebar Nav ── */
+  .sidebar {
+    grid-row: 1 / -1;
+    padding: 3rem 2rem 3rem 0;
+    border-right: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .site-name {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 2.5rem;
+    line-height: 1.4;
+  }
+
+  .site-name span {
+    display: block;
+    font-size: 1.05rem;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  nav a {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    color: var(--ink-light);
+    text-decoration: none;
+    padding: 0.35rem 0;
+    transition: color 0.2s;
+    border-left: 1px solid transparent;
+    padding-left: 0.5rem;
+    margin-left: -0.5rem;
+  }
+
+  nav a:hover, nav a.active {
+    color: var(--ink);
+    border-left-color: var(--ink-mid);
+  }
+
+  .nav-divider {
+    height: 1px;
+    background: var(--rule);
+    margin: 1rem 0;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--ink-faint);
+    line-height: 1.6;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Main Content ── */
+  main {
+    padding: 3rem 0 6rem 4rem;
+  }
+
+  /* ── Section visibility ── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── Typography ── */
+  .page-label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .page-label::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 40px;
+    background: var(--rule);
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: 2.4rem;
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    max-width: 58ch;
+    color: var(--ink-mid);
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+  }
+
+  p.lead {
+    font-size: 1.15rem;
+    color: var(--ink);
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
+
+  hr.rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 2.5rem 0;
+  }
+
+  /* ── Entry Cards ── */
+  .entry-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .entry {
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .entry:first-child { border-top: 1px solid var(--rule); }
+
+  .entry:hover .entry-title { color: var(--ink); }
+
+  .entry-meta {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .entry-title {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--ink-mid);
+    line-height: 1.3;
+    margin-bottom: 0.4rem;
+    transition: color 0.2s;
+  }
+
+  .entry-desc {
+    font-family: var(--serif);
+    font-size: 0.88rem;
+    color: var(--ink-light);
+    font-style: italic;
+    max-width: 52ch;
+  }
+
+  /* ── Tags ── */
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    color: var(--ink-light);
+    border: 1px solid var(--rule);
+    padding: 0.15rem 0.55rem;
+    border-radius: 2px;
+    margin-right: 0.35rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Home section ── */
+  .home-greeting {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  .home-title {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .home-subtitle {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--ink-light);
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+
+  .home-intro {
+    max-width: 54ch;
+    color: var(--ink-mid);
+    font-size: 1.05rem;
+    line-height: 1.85;
+    margin-bottom: 3rem;
+  }
+
+  .home-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    margin-top: 3rem;
+  }
+
+  .home-section-link {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    transition: color 0.15s;
+    padding-right: 1.5rem;
+  }
+
+  .home-section-link:nth-child(even) {
+    padding-left: 1.5rem;
+    padding-right: 0;
+    border-left: 1px solid var(--rule);
+  }
+
+  .home-section-link:hover .hs-name { color: var(--ink); }
+
+  .hs-name {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--ink-mid);
+    transition: color 0.2s;
+    margin-bottom: 0.2rem;
+  }
+
+  .hs-desc {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Poetry ── */
+  .poem-block {
+    padding: 2rem 0 2.5rem;
+    border-bottom: 1px solid var(--rule);
+    max-width: 48ch;
+  }
+
+  .poem-block:first-of-type { border-top: 1px solid var(--rule); }
+
+  .poem-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    margin-bottom: 1.2rem;
+    color: var(--ink);
+  }
+
+  .poem-text {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--ink-mid);
+    white-space: pre-line;
+    font-style: italic;
+  }
+
+  .poem-text em {
+    font-style: normal;
+    color: var(--ink-light);
+  }
+
+  /* ── Library ── */
+  .lib-category {
+    margin-bottom: 2.5rem;
+  }
+
+  .lib-category-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .lib-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .lib-entry {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+
+  .lib-entry:hover { border-bottom-color: var(--rule); }
+
+  .lib-entry-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--ink-mid);
+    flex: 1;
+    transition: color 0.2s;
+  }
+
+  .lib-entry:hover .lib-entry-title { color: var(--ink); }
+
+  .lib-entry-status {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  /* ── Notes ── */
+  .note-fragment {
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--rule);
+    max-width: 52ch;
+  }
+
+  .note-fragment:first-of-type { border-top: 1px solid var(--rule); }
+
+  .note-text {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--ink-mid);
+    line-height: 1.75;
+    margin-bottom: 0.75rem;
+  }
+
+  blockquote.note-quote {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--ink);
+    border-left: 2px solid var(--rule);
+    padding-left: 1.2rem;
+    margin-bottom: 0.6rem;
+    line-height: 1.65;
+  }
+
+  .note-attr {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Projects ── */
+  .project-card {
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .project-card:first-of-type { border-top: 1px solid var(--rule); }
+
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .project-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  .project-status {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .project-desc {
+    font-size: 0.92rem;
+    color: var(--ink-mid);
+    max-width: 54ch;
+    line-height: 1.7;
+    margin-bottom: 0.7rem;
+  }
+
+  /* ── About ── */
+  .about-block {
+    max-width: 54ch;
+  }
+
+  .about-block p {
+    max-width: 54ch;
+    font-size: 1rem;
+    line-height: 1.9;
+    margin-bottom: 1.4rem;
+  }
+
+  .about-block .epigraph {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    border-left: 1px solid var(--rule);
+    padding-left: 1.2rem;
+    margin: 2rem 0;
+  }
+
+  /* ── Ideas ── */
+  .idea-card {
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .idea-card:first-of-type { border-top: 1px solid var(--rule); }
+
+  .idea-type {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.35rem;
+  }
+
+  .idea-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .idea-body {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    max-width: 54ch;
+    line-height: 1.75;
+  }
+
+  /* ── Mobile ── */
+  .mobile-nav-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-mid);
+  }
+
+  @media (max-width: 700px) {
+    .shell {
+      grid-template-columns: 1fr;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100vh;
+      background: var(--bg);
+      border-right: 1px solid var(--rule);
+      z-index: 50;
+      padding: 2rem 1.5rem;
+      transform: translateX(-100%);
+      transition: transform 0.25s;
+    }
+    .sidebar.open { transform: translateX(0); }
+    main { padding: 4rem 1.5rem 4rem; }
+    .home-title { font-size: 2.2rem; }
+    .home-sections { grid-template-columns: 1fr; }
+    .home-section-link:nth-child(even) { border-left: none; padding-left: 0; }
+    .mobile-nav-toggle { display: block; }
+    h1 { font-size: 1.9rem; }
+  }
+
+  /* ── Animation ── */
+  .section.active > * {
+    animation: fadein 0.35s ease both;
+  }
+
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<button class="mobile-nav-toggle" id="navToggle">≡ menu</button>
+
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="site-name">
+      Archive<br>
+      <span>Sifon Imahjnr</span>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="#" class="nav-link active" data-section="home">home</a></li>
+        <li class="nav-divider" role="separator"></li>
+        <li><a href="#" class="nav-link" data-section="essays">essays</a></li>
+        <li><a href="#" class="nav-link" data-section="poetry">poetry</a></li>
+        <li><a href="#" class="nav-link" data-section="ideas">ideas</a></li>
+        <li><a href="#" class="nav-link" data-section="notes">notes</a></li>
+        <li class="nav-divider" role="separator"></li>
+        <li><a href="#" class="nav-link" data-section="projects">projects</a></li>
+        <li><a href="#" class="nav-link" data-section="library">library</a></li>
+        <li class="nav-divider" role="separator"></li>
+        <li><a href="#" class="nav-link" data-section="about">about</a></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      software engineering<br>
+      cybersecurity<br>
+      &mdash;<br>
+      last updated<br>
+      2025
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main>
+
+    <!-- HOME -->
+    <section class="section active" id="home">
+      <div class="home-greeting">Personal Archive</div>
+      <h1 class="home-title">Sifon<br>Imahjnr</h1>
+      <p class="home-subtitle">Software Engineering &amp; Cybersecurity</p>
+
+      <p class="home-intro">
+        This is a personal archive — a slow, deliberate collection of essays, poetry, ideas, 
+        and technical knowledge built over time. It is not a blog. Nothing here is written 
+        for engagement. Everything here is written to think more clearly, and to leave a 
+        record of what mattered.
+      </p>
+
+      <p class="home-intro" style="font-size:0.9rem; color:var(--ink-light); margin-top:-0.5rem;">
+        Navigate using the index to the left. Begin wherever you like.
+      </p>
+
+      <div class="home-sections">
+        <div class="home-section-link" data-section="essays">
+          <div class="hs-name">Essays</div>
+          <div class="hs-desc">long-form thinking</div>
+        </div>
+        <div class="home-section-link" data-section="poetry">
+          <div class="hs-name">Poetry</div>
+          <div class="hs-desc">spoken word &amp; reflection</div>
+        </div>
+        <div class="home-section-link" data-section="ideas">
+          <div class="hs-name">Ideas</div>
+          <div class="hs-desc">concepts &amp; experiments</div>
+        </div>
+        <div class="home-section-link" data-section="notes">
+          <div class="hs-name">Notes</div>
+          <div class="hs-desc">fragments &amp; observations</div>
+        </div>
+        <div class="home-section-link" data-section="projects">
+          <div class="hs-name">Projects</div>
+          <div class="hs-desc">systems &amp; tools built</div>
+        </div>
+        <div class="home-section-link" data-section="library">
+          <div class="hs-name">Library</div>
+          <div class="hs-desc">knowledge &amp; study notes</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESSAYS -->
+    <section class="section" id="essays">
+      <div class="page-label">Essays</div>
+      <h1>Long-form<br>thinking.</h1>
+      <p class="lead">
+        On technology, society, discipline, philosophy, creativity, and the human condition.
+      </p>
+
+      <div class="entry-list">
+        <div class="entry">
+          <div class="entry-meta">2025 &mdash; Technology &amp; Society</div>
+          <div class="entry-title">The Architecture of Attention: Why Every System You Build Also Builds You</div>
+          <div class="entry-desc">On the relationship between the tools we construct and the minds we construct them with. A study in recursive influence.</div>
+          <div>
+            <span class="tag">technology</span>
+            <span class="tag">cognition</span>
+            <span class="tag">discipline</span>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta">2025 &mdash; Philosophy</div>
+          <div class="entry-title">On the Discipline of Not Knowing: Uncertainty as an Intellectual Practice</div>
+          <div class="entry-desc">A case for sitting longer with unanswered questions and the productive discomfort of genuine ignorance.</div>
+          <div>
+            <span class="tag">philosophy</span>
+            <span class="tag">epistemology</span>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta">2025 &mdash; Cybersecurity</div>
+          <div class="entry-title">Trust as a Protocol: What Security Engineering Reveals About Human Relationships</div>
+          <div class="entry-desc">Authentication, integrity, and non-repudiation — these are not just network concepts. They describe everything.</div>
+          <div>
+            <span class="tag">cybersecurity</span>
+            <span class="tag">society</span>
+            <span class="tag">systems</span>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta">2025 &mdash; Creativity</div>
+          <div class="entry-title">What Code and Poetry Share: The Grammar of Constraint</div>
+          <div class="entry-desc">Both require precision, both reward economy of expression, and both reveal character through every decision made.</div>
+          <div>
+            <span class="tag">creativity</span>
+            <span class="tag">writing</span>
+            <span class="tag">engineering</span>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta">2024 &mdash; Human Behavior</div>
+          <div class="entry-title">The Problem with Motivation: Why We Chase the Wrong Fuel</div>
+          <div class="entry-desc">Motivation is weather. Discipline is infrastructure. An argument for building the latter.</div>
+          <div>
+            <span class="tag">discipline</span>
+            <span class="tag">psychology</span>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta">2024 &mdash; Society</div>
+          <div class="entry-title">Signal and Noise in an Age of Infinite Content</div>
+          <div class="entry-desc">We have solved the problem of access. We have created the problem of discernment. On how to read in an era that does not reward slowness.</div>
+          <div>
+            <span class="tag">society</span>
+            <span class="tag">information</span>
+            <span class="tag">reading</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- POETRY -->
+    <section class="section" id="poetry">
+      <div class="page-label">Poetry</div>
+      <h1>Spoken word<br>&amp; reflection.</h1>
+      <p class="lead">
+        Dark, reflective, and written in the tradition of spoken word.
+        These are not decorations. They are attempts at precision
+        where prose falls short.
+      </p>
+
+      <div class="poem-block">
+        <div class="entry-meta">I.</div>
+        <h2 class="poem-title">Inheritance</h2>
+        <div class="poem-text">My father gave me silence the way
+some fathers give their sons land —
+as though stillness were an estate,
+and I should live off its yields.
+
+I learned to speak in semicolons.
+Sentences that hold but do not end.
+Thoughts that stand at thresholds
+and never quite go in.
+
+There is a grammar to grief
+that nobody teaches.
+You pick it up in waiting rooms,
+at three in the morning,
+in the space between a question
+and the answer that doesn't come.
+
+I am fluent now.
+I speak it like a first language.</div>
+      </div>
+
+      <div class="poem-block">
+        <div class="entry-meta">II.</div>
+        <h2 class="poem-title">System Failure</h2>
+        <div class="poem-text">The thing about breaking down
+is that you don't announce it.
+No error message, no stack trace.
+Just a slow degradation
+masked as function.
+
+I have run at forty percent
+and called it fine.
+Kept logs I never read.
+Flagged warnings I patched
+without fixing the root.
+
+The human body
+has no rollback.
+There is no restore point
+before the damage.
+
+You patch forward.
+You always patch forward.</div>
+      </div>
+
+      <div class="poem-block">
+        <div class="entry-meta">III.</div>
+        <h2 class="poem-title">Cartography</h2>
+        <div class="poem-text">I have been drawing a map
+of things I do not understand.
+
+The territory keeps changing.
+I keep drawing.
+
+Not because understanding is near —
+but because the act of mapping
+is the only honest prayer
+I know how to make.
+
+Every question is a coordinate.
+Every answer, a revision.
+The map is never finished.
+That is not a failure.
+
+That is the work.</div>
+      </div>
+
+      <div class="poem-block">
+        <div class="entry-meta">IV.</div>
+        <h2 class="poem-title">On Disappearing</h2>
+        <div class="poem-text">There are people who leave quietly —
+so quietly you mistake it
+for them still being there.
+
+Their silences become furniture.
+You arrange your life around them.
+You stop noticing.
+
+And then one day the room looks different
+and you can't name what's gone
+only that it is
+and that you miss it
+in the dull ache way
+of muscle memory
+reaching for something
+that has already been moved.</div>
+      </div>
+    </section>
+
+    <!-- IDEAS -->
+    <section class="section" id="ideas">
+      <div class="page-label">Ideas</div>
+      <h1>Concepts &amp;<br>experiments.</h1>
+      <p class="lead">
+        Short but serious. Startup hypotheses, thought experiments,
+        observations not yet ready to become essays.
+        Some will go nowhere. That is their right.
+      </p>
+
+      <div class="idea-card">
+        <div class="idea-type">Startup Concept</div>
+        <div class="idea-title">A tool that maps your knowledge gaps — not your knowledge</div>
+        <p class="idea-body">
+          Every learning platform maps what you know. None map what you believe you understand 
+          but don't. A diagnostic system that surfaces false confidence is worth more than any 
+          flashcard app. The hardest thing to learn is that you're wrong about something you 
+          thought you understood.
+        </p>
+        <div><span class="tag">edtech</span><span class="tag">epistemology</span><span class="tag">tooling</span></div>
+      </div>
+
+      <div class="idea-card">
+        <div class="idea-type">Thought Experiment</div>
+        <div class="idea-title">What if security was measured by what you give up, not what you protect?</div>
+        <p class="idea-body">
+          We measure security by what we lock down. But every lock is a constraint on movement. 
+          The most interesting security question is not "what cannot enter?" but "what can no 
+          longer leave?" Threat models that account for operational friction would look very 
+          different from the ones we build.
+        </p>
+        <div><span class="tag">cybersecurity</span><span class="tag">philosophy</span></div>
+      </div>
+
+      <div class="idea-card">
+        <div class="idea-type">Observation</div>
+        <div class="idea-title">The most dangerous software is software that almost works</div>
+        <p class="idea-body">
+          Broken software fails visibly. Software that almost works produces confident, 
+          coherent, and wrong outputs. This is true of large language models. It is also 
+          true of legislation, economic models, and people. We underinvest in the failure 
+          modes of near-correct systems.
+        </p>
+        <div><span class="tag">systems</span><span class="tag">AI</span><span class="tag">engineering</span></div>
+      </div>
+
+      <div class="idea-card">
+        <div class="idea-type">Startup Concept</div>
+        <div class="idea-title">A structured notebook for ideas with decay timers</div>
+        <p class="idea-body">
+          Most ideas should die. The problem is we keep them alive in flat note-taking systems 
+          with no pressure to act or discard. An idea vault with configurable TTLs — after 
+          which entries either become commitments or are archived — would force the decision 
+          most people avoid.
+        </p>
+        <div><span class="tag">productivity</span><span class="tag">tooling</span><span class="tag">decision-making</span></div>
+      </div>
+
+      <div class="idea-card">
+        <div class="idea-type">Observation</div>
+        <div class="idea-title">Attention has a gravity that expertise cannot override</div>
+        <p class="idea-body">
+          Even people who understand algorithmic distraction remain susceptible to it. 
+          Knowledge of a system is not immunity from that system. This is relevant for 
+          cybersecurity professionals, psychologists, and anyone who believes that 
+          understanding a bias neutralises it.
+        </p>
+        <div><span class="tag">attention</span><span class="tag">cognition</span><span class="tag">psychology</span></div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <div class="page-label">Projects</div>
+      <h1>Systems &amp;<br>tools built.</h1>
+      <p class="lead">
+        Serious work, not demos. These are experiments with real 
+        constraints, built to solve problems I have actually encountered.
+      </p>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-title">Sentinel — Network Anomaly Detection Tool</div>
+          <div class="project-status">● Active</div>
+        </div>
+        <p class="project-desc">
+          A lightweight network traffic analyser built in Python that monitors packet flows 
+          and flags statistical anomalies consistent with reconnaissance and lateral movement 
+          patterns. Designed to run on constrained hardware without cloud dependency.
+        </p>
+        <div>
+          <span class="tag">python</span>
+          <span class="tag">networking</span>
+          <span class="tag">cybersecurity</span>
+          <span class="tag">IDS</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-title">Commonplace — Plain Text Knowledge System</div>
+          <div class="project-status">● Complete</div>
+        </div>
+        <p class="project-desc">
+          A personal knowledge management system built on flat markdown files, a custom 
+          indexer, and a terminal-first query interface. No databases. No subscriptions. 
+          Everything lives in a folder and survives any migration.
+        </p>
+        <div>
+          <span class="tag">golang</span>
+          <span class="tag">PKM</span>
+          <span class="tag">tooling</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-title">CTF Writeups Archive</div>
+          <div class="project-status">○ Ongoing</div>
+        </div>
+        <p class="project-desc">
+          A structured collection of documented solutions to Capture the Flag challenges 
+          across web exploitation, binary exploitation, forensics, and cryptography. 
+          Written as study notes, not walkthroughs — the reasoning is documented, not just the steps.
+        </p>
+        <div>
+          <span class="tag">CTF</span>
+          <span class="tag">exploitation</span>
+          <span class="tag">cryptography</span>
+          <span class="tag">writeups</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-title">Substrate — Static Site Generator</div>
+          <div class="project-status">● Complete</div>
+        </div>
+        <p class="project-desc">
+          The engine behind this website. A minimal static site generator that compiles 
+          markdown and a single HTML template into a fast, dependency-free archive. 
+          Built because every existing tool was more complex than the problem required.
+        </p>
+        <div>
+          <span class="tag">python</span>
+          <span class="tag">static-site</span>
+          <span class="tag">tooling</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-title">Hash Visualiser — Educational Cryptography Tool</div>
+          <div class="project-status">○ In Progress</div>
+        </div>
+        <p class="project-desc">
+          An interactive visual demonstration of how common hashing algorithms process input 
+          data step by step. Built for people learning cryptography who need to see the 
+          mechanics rather than just read the specification.
+        </p>
+        <div>
+          <span class="tag">cryptography</span>
+          <span class="tag">education</span>
+          <span class="tag">javascript</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIBRARY -->
+    <section class="section" id="library">
+      <div class="page-label">Library</div>
+      <h1>Knowledge<br>&amp; study notes.</h1>
+      <p class="lead">
+        Notes written to understand, not to demonstrate understanding.
+        These are working documents — they will be revised, extended, and corrected.
+      </p>
+
+      <div class="lib-category">
+        <div class="lib-category-label">Algorithms &amp; Data Structures</div>
+        <div class="lib-entries">
+          <div class="lib-entry">
+            <div class="lib-entry-title">Time and Space Complexity — A Working Reference</div>
+            <div class="lib-entry-status">complete</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Graph Traversal: BFS, DFS, and Their Consequences</div>
+            <div class="lib-entry-status">complete</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Dynamic Programming: From Recursion to Memoisation</div>
+            <div class="lib-entry-status">in progress</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Trees — Binary, AVL, Red-Black, B-Trees</div>
+            <div class="lib-entry-status">in progress</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Sorting Algorithms — Why Choice Matters</div>
+            <div class="lib-entry-status">complete</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lib-category">
+        <div class="lib-category-label">Cybersecurity</div>
+        <div class="lib-entries">
+          <div class="lib-entry">
+            <div class="lib-entry-title">The OSI Model as a Mental Framework, Not Just a Stack</div>
+            <div class="lib-entry-status">complete</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Cryptographic Primitives — Hashing, Symmetric, Asymmetric</div>
+            <div class="lib-entry-status">complete</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Web Application Attack Surfaces — OWASP Top 10 Notes</div>
+            <div class="lib-entry-status">in progress</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Buffer Overflows — Understanding Stack Exploitation</div>
+            <div class="lib-entry-status">draft</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">PKI and Certificate Chains — How Trust is Constructed</div>
+            <div class="lib-entry-status">draft</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lib-category">
+        <div class="lib-category-label">Mathematics</div>
+        <div class="lib-entries">
+          <div class="lib-entry">
+            <div class="lib-entry-title">Discrete Mathematics — Logic, Sets, and Proofs</div>
+            <div class="lib-entry-status">complete</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Number Theory Fundamentals for Cryptography</div>
+            <div class="lib-entry-status">in progress</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Linear Algebra — Vectors, Matrices, Transformations</div>
+            <div class="lib-entry-status">in progress</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Probability and Uncertainty — A Working Intuition</div>
+            <div class="lib-entry-status">draft</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lib-category">
+        <div class="lib-category-label">Physics &amp; Systems Thinking</div>
+        <div class="lib-entries">
+          <div class="lib-entry">
+            <div class="lib-entry-title">Thermodynamics as a Framework for Understanding Systems</div>
+            <div class="lib-entry-status">draft</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Emergence — When Simple Rules Produce Complex Behaviour</div>
+            <div class="lib-entry-status">draft</div>
+          </div>
+          <div class="lib-entry">
+            <div class="lib-entry-title">Information Theory — Shannon, Entropy, and Meaning</div>
+            <div class="lib-entry-status">in progress</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTES -->
+    <section class="section" id="notes">
+      <div class="page-label">Notes</div>
+      <h1>Fragments &amp;<br>observations.</h1>
+      <p class="lead">
+        Short-form. Unfinished. Things noticed that seemed too small for an essay 
+        and too significant to lose.
+      </p>
+
+      <div class="note-fragment">
+        <p class="note-text">
+          The best mental models are the ones you forget. If you have to remember to apply a 
+          framework, it hasn't become thought yet — it's still a tool sitting outside your mind, 
+          waiting to be picked up. Real understanding is transparent. You think through it 
+          without thinking about it.
+        </p>
+        <div class="note-attr">on mental models</div>
+      </div>
+
+      <div class="note-fragment">
+        <blockquote class="note-quote">
+          "Simplicity is a great virtue but it requires hard work to achieve it and education 
+          to appreciate it. And to make matters worse: complexity sells better."
+        </blockquote>
+        <div class="note-attr">— Edsger W. Dijkstra</div>
+      </div>
+
+      <div class="note-fragment">
+        <p class="note-text">
+          Every system has a grammar. Programming languages have syntax. Networks have protocols. 
+          Organisations have culture. The fastest way to understand something is to learn its 
+          grammar — not the rules, but the assumptions the rules are built on. The rules change. 
+          The assumptions are more durable.
+        </p>
+        <div class="note-attr">on systems</div>
+      </div>
+
+      <div class="note-fragment">
+        <blockquote class="note-quote">
+          "I have no special talent. I am only passionately curious."
+        </blockquote>
+        <div class="note-attr">— Albert Einstein</div>
+      </div>
+
+      <div class="note-fragment">
+        <p class="note-text">
+          There is a difference between writing to communicate and writing to think. Most writing 
+          advice applies to the first. Almost none of it applies to the second. The notebook is 
+          not an audience. It is a laboratory. The standard for clarity there is different — 
+          you need only to be clear enough to return to an idea and continue it.
+        </p>
+        <div class="note-attr">on writing</div>
+      </div>
+
+      <div class="note-fragment">
+        <p class="note-text">
+          Security is not a state, it is a posture. You are never secure — you are only more or 
+          less difficult to compromise at a given moment. The mistake is treating it as a 
+          destination. It is a practice, and the practice never ends.
+        </p>
+        <div class="note-attr">on cybersecurity</div>
+      </div>
+
+      <div class="note-fragment">
+        <blockquote class="note-quote">
+          "A ship in harbor is safe, but that is not what ships are for."
+        </blockquote>
+        <div class="note-attr">— John A. Shedd</div>
+      </div>
+
+      <div class="note-fragment">
+        <p class="note-text">
+          Consistency is underrated because its rewards are invisible in the short term and 
+          enormous in the long term — which makes it a bad fit for a culture organised 
+          around immediate feedback. The things most worth doing have no dashboard.
+        </p>
+        <div class="note-attr">on discipline</div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="page-label">About</div>
+      <h1>On the<br>purpose of this.</h1>
+
+      <div class="about-block">
+        <p class="epigraph">
+          "A person who has not made peace with his losses will often try to borrow their 
+          power from whatever is around them." — This site is an attempt at ownership.
+        </p>
+
+        <p>
+          My name is Sifon Imahjnr. I am studying software engineering and cybersecurity — 
+          not because these fields are lucrative, though they are, but because they are the 
+          closest I have found to a discipline of thinking clearly under constraint.
+        </p>
+
+        <p>
+          This website is an archive. The word is deliberate. Archives are not optimised 
+          for consumption. They are built for preservation and return — for the possibility 
+          of coming back to something years later and finding it still there, still useful, 
+          still honest.
+        </p>
+
+        <p>
+          I write essays when an idea requires more than a paragraph. I write poetry when 
+          it requires less than arguments can carry. I take notes when I encounter 
+          something I do not want to lose to the speed of forgetting. I build things when 
+          thinking alone is insufficient.
+        </p>
+
+        <p>
+          None of this is public performance. It is a private practice made visible — 
+          partly to hold myself accountable to the work, and partly on the small chance 
+          that something here is useful to someone who finds it.
+        </p>
+
+        <p>
+          If you have found something here that matters to you, or that you want to 
+          argue with, you are welcome to reach out.
+        </p>
+
+        <hr class="rule">
+
+        <h3>Contact</h3>
+        <p style="font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.05em; color: var(--ink-mid);">
+          hello [at] sifonimahjnr [dot] com
+        </p>
+
+        <hr class="rule">
+
+        <p style="font-size:0.82rem; color: var(--ink-light); font-style: italic;">
+          This site is built with plain HTML, no framework, no tracking, no analytics.
+          It will remain readable as long as browsers render HTML.
+        </p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Navigation
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('.section');
+  const homeSectionLinks = document.querySelectorAll('.home-section-link');
+  const sidebar = document.getElementById('sidebar');
+  const navToggle = document.getElementById('navToggle');
+
+  function showSection(id) {
+    sections.forEach(s => s.classList.remove('active'));
+    navLinks.forEach(l => l.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
+    const activeLink = document.querySelector(`.nav-link[data-section="${id}"]`);
+    if (activeLink) activeLink.classList.add('active');
+    window.scrollTo(0, 0);
+    sidebar.classList.remove('open');
+  }
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      showSection(link.dataset.section);
+    });
+  });
+
+  homeSectionLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      showSection(link.dataset.section);
+    });
+  });
+
+  navToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!sidebar.contains(e.target) && e.target !== navToggle) {
+      sidebar.classList.remove('open');
+    }
+  });
+</script>
+</body>
+</html>
